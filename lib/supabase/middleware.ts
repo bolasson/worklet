@@ -12,6 +12,14 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
+  if (
+    request.nextUrl.pathname.startsWith("/dev") &&
+    process.env.NODE_ENV === "production"
+  ) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+  
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
