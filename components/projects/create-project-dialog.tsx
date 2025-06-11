@@ -81,7 +81,7 @@ export default function CreateProjectDialog({ onCreate }: Props) {
     return (
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
-                <Button>New Project</Button>
+                <Button className="mb-6">New Project</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>

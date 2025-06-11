@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
 import CreateProjectDialog from "@/components/projects/create-project-dialog";
 import ProjectCard from "@/components/projects/project-card";
+import { createClient } from "@/lib/supabase/client";
+import { useEffect, useState } from "react";
 
 type Project = {
     id: string;
@@ -22,7 +22,6 @@ export default function ProjectDashboard() {
             const {
                 data: { user },
             } = await supabase.auth.getUser();
-
             if (!user) return;
 
             const { data, error } = await supabase
@@ -41,10 +40,7 @@ export default function ProjectDashboard() {
     const handleDelete = async (id: string) => {
         const supabase = createClient();
         const { error } = await supabase.from("projects").delete().eq("id", id);
-
-        if (!error) {
-            setProjects((prev) => prev.filter((p) => p.id !== id));
-        }
+        if (!error) setProjects((prev) => prev.filter((p) => p.id !== id));
     };
 
     const handleCreate = (project: Project) => {
@@ -53,14 +49,14 @@ export default function ProjectDashboard() {
 
     return (
         <main className="p-6">
-            <div className="flex items-center justify-start mb-6 gap-x-10">
-                <h1 className="text-4xl font-bold">My Projects</h1>
-                <CreateProjectDialog onCreate={handleCreate} />
-            </div>
-            <hr className="mb-8" />
+            <CreateProjectDialog onCreate={handleCreate} />
             <div className="flex flex-wrap gap-6">
                 {projects.map((project) => (
-                    <ProjectCard key={project.id} project={project} onDelete={handleDelete} />
+                    <ProjectCard
+                        key={project.id}
+                        project={project}
+                        onDelete={handleDelete}
+                    />
                 ))}
             </div>
         </main>

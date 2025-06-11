@@ -1,14 +1,9 @@
-"use client";
-
 import Link from "next/link";
-import { ReactNode } from "react";
 import Image from "next/image";
+import { AuthButton } from "@/components/auth-button";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
-type Props = {
-    children: ReactNode;
-};
-
-export default function Navbar({ children }: Props) {
+export default function Navbar() {
     return (
         <nav className="w-full bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -20,15 +15,17 @@ export default function Navbar({ children }: Props) {
                     className="rounded-full"
                 />
                 <span className="text-xl font-bold text-primary">Worklet</span>
-                {children}
-            </div>
-            <div className="flex gap-6">
                 <Link
                     href="/projects"
                     className="text-muted-foreground hover:text-primary transition-colors font-medium"
                 >
-                    Dashboard
+                    Project Dashboard
                 </Link>
+            </div>
+
+            <div className="flex items-center gap-4">
+                <AuthButton />
+                {/* Optional: <ThemeSwitcher /> */}
             </div>
         </nav>
     );
