@@ -3,6 +3,7 @@
 import CreateProjectDialog from "@/components/projects/create-project-dialog";
 import ProjectCard from "@/components/projects/project-card";
 import { createClient } from "@/lib/supabase/client";
+import { fetchProjectDurations } from "@/lib/supabase/queries";
 import { useEffect, useState } from "react";
 
 export type Project = {
@@ -12,8 +13,12 @@ export type Project = {
     estimated_duration: string | null;
 };
 
+export type ProjectWithTime = Project & {
+    totalMinutes?: number;
+};
+
 export default function ProjectDashboard() {
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [projects, setProjects] = useState<ProjectWithTime[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -30,7 +35,14 @@ export default function ProjectDashboard() {
                 .eq("person_id", user.id)
                 .order("created_at", { ascending: false });
 
-            if (!error && data) setProjects(data);
+            if (!error && data) {
+                const durations = await fetchProjectDurations(data.map((p) => p.id));
+                const projectsWithTime = data.map((project) => ({
+                    ...project,
+                    totalMinutes: durations[project.id] ?? 0,
+                }));
+                setProjects(projectsWithTime);
+            }
             setLoading(false);
         };
 
