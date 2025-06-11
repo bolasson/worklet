@@ -12,12 +12,13 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import type { Project } from "@/app/projects/page";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
 type Props = {
-    onCreate: (project: any) => void;
+    onCreate: (project: Project) => void;
 };
 
 export default function CreateProjectDialog({ onCreate }: Props) {

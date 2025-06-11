@@ -14,15 +14,19 @@ export default function DeleteUserPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ uid }),
             });
-
+    
             const data = await res.json();
             if (!res.ok) throw new Error(data.error);
-
+    
             setStatus("✅ User deleted successfully.");
-        } catch (err: any) {
-            setStatus(`❌ Error: ${err.message}`);
+        } catch (err: unknown) {
+            let message = "An unexpected error occurred";
+            if (err instanceof Error) {
+                message = err.message;
+            }
+            setStatus(`❌ Error: ${message}`);
         }
-    };
+    };    
 
     return (
         <main className="max-w-lg mx-auto p-6 space-y-4">

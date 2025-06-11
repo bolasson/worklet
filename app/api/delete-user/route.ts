@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+type DeleteUserRequest = {
+    uid: string;
+};
+
 export async function POST(req: Request) {
-    const { uid } = await req.json();
+    const body: DeleteUserRequest = await req.json();
+    const { uid } = body;
 
     if (!uid) {
         return NextResponse.json({ error: "Missing UID" }, { status: 400 });
@@ -17,9 +22,12 @@ export async function POST(req: Request) {
     try {
         const { error } = await supabase.auth.admin.deleteUser(uid);
         if (error) throw error;
-
         return NextResponse.json({ message: "User deleted" });
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        let message = "An unexpected error occurred";
+        if (error instanceof Error) {
+            message = error.message;
+        }
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

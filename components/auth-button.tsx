@@ -29,6 +29,10 @@ export async function AuthButton() {
     .eq("id", user.id)
     .single();
 
+  if (error) {
+    console.error("Error fetching person:", error.message);
+  }
+  
   const displayName = person?.name || user.email;
 
   return (

@@ -1,14 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function Navbar() {
     return (
-        <nav className="w-full bg-white border-b shadow-sm px-6 py-3 flex items-center justify-between">
+        <nav className="w-full bg-navbar border-b shadow-lg px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-4">
                 <Image
-                    src="/favicon.ico"
+                    src="/icon.png"
                     alt="Worklet Logo"
                     width={32}
                     height={32}
@@ -22,10 +21,8 @@ export default function Navbar() {
                     Project Dashboard
                 </Link>
             </div>
-
             <div className="flex items-center gap-4">
                 <AuthButton />
-                {/* Optional: <ThemeSwitcher /> */}
             </div>
         </nav>
     );

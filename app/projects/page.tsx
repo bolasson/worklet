@@ -5,7 +5,7 @@ import ProjectCard from "@/components/projects/project-card";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 
-type Project = {
+export type Project = {
     id: string;
     title: string;
     description: string;
@@ -46,6 +46,14 @@ export default function ProjectDashboard() {
     const handleCreate = (project: Project) => {
         setProjects((prev) => [project, ...prev]);
     };
+
+    if (loading) {
+        return (
+            <main className="p-6">
+                <div className="text-center">Loading projects...</div>
+            </main>
+        );
+    }
 
     return (
         <main className="p-6">
