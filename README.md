@@ -1,105 +1,80 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# ⌚ Worklet Initial Design
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+## Project Purpose and Goals
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+The goal of this project is to help people (especially me) improve their ability to estimate how long tasks and projects will take. The app lets users:
 
-## Features
+- Log **projects** and **work sessions**.
+- Record their time spent and reflect on what took more or less time than expected.
+- Review personal analytics to spot estimation patterns and improve accuracy.
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+People are notoriously poor at time estimation, and I want this tool to serve as both a tracker and a learning resource.
 
-## Demo
+---
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+## Conceptual Summary
 
-## Deploy to Vercel
+Over time, this app should allow users to:
+- Build a **history** of actual vs. estimated work.
+- Analyze their **accuracy** in estimation.
+- Gain **insights** about productivity patterns, session urgency vs. importance, and more.
 
-Vercel deployment will guide you through creating a Supabase account and project.
+I plan to build and host this project using:
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+- **Frontend & Backend**: Next.js (React) hosted on Vercel
+- **Database & Auth**: Supabase (PostgreSQL + Supabase Auth)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+---
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+## ERD
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+![image](https://github.com/user-attachments/assets/d8ab1608-22ec-46f7-9ba3-e6d7e5b173f0)
+**Entities:**
 
-## Clone and run locally
+- **people** — one per authenticated user
+- **projects** — each linked to a person
+- **sessions** — individual work sessions linked to a project
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+---
 
-2. Create a Next.js app using the Supabase Starter template npx command
+## System Design
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+![image](https://github.com/user-attachments/assets/c47dc233-c5b5-44e0-9392-714551e91849)
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+- Users log in via Supabase Auth.
+- Once authenticated, they can perform CRUD operations for:
+  - **Projects**
+  - **Sessions**
+- All operations are served via a **Next.js frontend/backend**, deployed on **Vercel**.
+- Supabase handles both **Auth** and **PostgreSQL** data storage.
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+---
 
-3. Use `cd` to change into the app's directory
+## Development Timeline
 
-   ```bash
-   cd with-supabase-app
-   ```
+| Date       | Goal                                                                 |
+|------------|----------------------------------------------------------------------|
+| **June 6** | Core schema in Supabase complete (people, projects, sessions)       |
+| **June 9** | Create the project dashboard and associated backend calls        |
+| **June 10** | Create the project details page, and session logic (frontend and backend)             |
+| **June 11** | Polish the UI and form validation |
+| **June 16**| Stretch goal: basic analytics on time estimation accuracy           |
 
-4. Rename `.env.example` to `.env.local` and update the following:
+---
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+## UX Plan
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+The current layout involves:
+- **Dashboard**: shows projects as cards with progress bars, details, and estimated duration.
+- **Project Detail Page**:
+  - Left panel: project title, description, and progress. Potentially will also display project stats and recommendations. 
+  - Right panel: sessions grouped by week, then by day with session reports.
+- Use **shadcn/ui** for clean design.
 
-5. You can now run the Next.js local development server:
+---
 
-   ```bash
-   npm run dev
-   ```
+## Future Plans
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
-
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
-
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
-
-## Feedback and issues
-
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+Over the summer, I plan to:
+- Add **estimation accuracy analytics** (e.g., charts showing predicted vs. actual).
+- Possibly allow multiple users to contribute to a single project.
